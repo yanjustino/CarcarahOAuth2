@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Carcarah.OnAuth.OpenId
+namespace Carcarah.OnAuth.OpenId.Request
 {
     public class AuthenticationRequestException : Exception
     {

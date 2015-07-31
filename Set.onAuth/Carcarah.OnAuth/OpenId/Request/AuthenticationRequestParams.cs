@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Carcarah.OnAuth.OpenId
+namespace Carcarah.OnAuth.OpenId.Request
 {
     internal class AuthenticationRequestParams
     {
@@ -16,6 +16,7 @@ namespace Carcarah.OnAuth.OpenId
         public string client_id { get; private set; }
         public string redirect_uri { get; private set; }
         public string state { get; private set; }
+        public string prompt { get; private set; }
 
         public AuthenticationRequestParams(IOwinContext context)
         {
@@ -26,8 +27,14 @@ namespace Carcarah.OnAuth.OpenId
             this.client_id = context.Request.Query["client_id"];
             this.redirect_uri = context.Request.Query["redirect_uri"];
             this.state = context.Request.Query["state"];
+            this.prompt = context.Request.Query["prompt"];
 
             ValidateQueryString();
+        }
+
+        public bool IsLoginPrompt()
+        {
+            return this.prompt.Equals("login");
         }
 
         private void ValidateQueryString()

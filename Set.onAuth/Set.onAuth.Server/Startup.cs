@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Owin;
 using Owin;
 using Carcarah.OnAuth.Config;
+using Carcarah.OnAuth;
+using System.Security.Claims;
 
 [assembly: OwinStartup(typeof(Set.onAuth.Server.Startup))]
 
@@ -12,19 +14,31 @@ namespace Set.onAuth.Server
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseCarcarahMiddleware(new CarcarahMiddlewareConfigOptions
+            app.UseCarcarahMiddleware(new CarcarahOnAuthOptions
             {
-                Provider = new MyProvider()
+                AuthorizationEndpoint = new PathString("/onauth/authorize"),
+                AuthorizationProvider = new MyProvider()
             });
         }
     }
 
-    public class MyProvider : CarcarahAuthorizationServerProvider
+    public class MyProvider : CarcarahAuthorizationProvider
     {
-        public override Task<bool> GrantResourceOwnerCredentials()
+        public override Task<bool> GrantResourceOwnerCredentials(string username, string password)
         {
-            //AddClaims();
-            return Task.FromResult<bool>(false);
+            Console.WriteLine("Validate Provider");
+
+            var user = username;
+            var pass = password;
+
+            var isValid = user == "yan" && pass == "master";
+
+            var identity = new ClaimsIdentity();
+            identity.AddClaim(new Claim(ClaimTypes.Name, "yan"));
+
+            Validate(identity);
+
+            return Task.FromResult<bool>(isValid);
         }
     }
 }

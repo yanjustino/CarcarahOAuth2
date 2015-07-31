@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace Carcarah.OnAuth
 {
-    internal static class CarcarahOnAuthMiddlewareResponse
+    internal static class CarcarahOnAuthGetResponse
     {
-        static internal void Authorize(this IOwinContext context)
+        static internal void Authorized(this IOwinContext context)
         {
             context.Response.StatusCode = 200;
             context.Response.ReasonPhrase = "OK";
+        }
+
+        static internal void Unauthorized(this IOwinContext context, CarcarahOnAuthOptions options)
+        {
+            context.Response.Redirect($"{options.AuthorizationEndpoint.Value}{context.Request.QueryString}");
         }
 
         static internal void Deny(this IOwinContext context)

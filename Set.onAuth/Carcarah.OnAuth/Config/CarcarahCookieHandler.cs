@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Carcarah.OnAuth
+namespace Carcarah.OnAuth.Config
 {
-    internal static class CookieHandler
+    internal static class CarcarahCookieHandler
     {
         private static string TOKEN_KEY = "set.rn.gov.br.onauth";
 

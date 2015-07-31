@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Authorize";
+}
+
+<h2>Authorize</h2>
+
+<form action="/?@Request.QueryString" method="post">
+    <input type="text" id="username" name="username" value="user" />
+    <input type="text" id="password" name="password" value="pass" />
+
+    <input type="submit" name="name" value="autenticar" />
+</form>
+
