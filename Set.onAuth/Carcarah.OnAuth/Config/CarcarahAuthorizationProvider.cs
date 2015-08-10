@@ -12,19 +12,11 @@ namespace Carcarah.OnAuth.Config
 {
     public abstract class CarcarahAuthorizationProvider
     {
-        internal IOwinContext Context { get; set; }
+        public abstract Task<bool> GrantResourceOwnerCredentials(CarcarahOnAuthContext context);
 
-        public abstract Task<bool> GrantResourceOwnerCredentials(string userName, string passWord);
-
-        protected void Validate(ClaimsIdentity identity)
+        internal virtual bool HasValidateCookieAuthentication(CarcarahOnAuthContext context)
         {
-            CarcarahCookieHandler.RegisterToken(this.Context, "true");
-        }
-
-        internal Task<bool> ValidateClientAuthentication()
-        {
-            Console.WriteLine("Validate Client");
-            return Task.FromResult<bool>(this.Context.TokenRegistered());
+            return context.Request.TokenRegistered();
         }
     }
 }

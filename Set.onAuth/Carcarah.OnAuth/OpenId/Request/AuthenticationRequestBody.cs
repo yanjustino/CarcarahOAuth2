@@ -8,25 +8,34 @@ using System.Threading.Tasks;
 
 namespace Carcarah.OnAuth.OpenId.Request
 {
-    internal class AuthenticationRequestBody
+    public class AuthenticationRequestBody
     {
-        private IOwinContext _context;
+        private IOwinContext context;
+
+        public string UserName => FindUserName()?.Result;
+        public string Password => FindPassword()?.Result;
 
         public AuthenticationRequestBody(IOwinContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        public async Task<string> FindUserName()
+        private async Task<string> FindUserName()
         {
-            var r = await _context.Request.ReadFormAsync();
-            return r["username"];
+            if (context.Request.Body == null)
+                return null;
+
+            var form = await context.Request.ReadFormAsync();
+            return form["username"];
         }
 
-        public async Task<string> FindPassword()
+        private async Task<string> FindPassword()
         {
-            var r = await _context.Request.ReadFormAsync();
-            return r["password"];
+            if (context.Request.Body == null)
+                return null;
+
+            var form = await context.Request.ReadFormAsync();
+            return form["password"];
         }
     }
 }

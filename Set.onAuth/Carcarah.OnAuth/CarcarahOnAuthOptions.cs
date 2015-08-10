@@ -7,5 +7,11 @@ namespace Carcarah.OnAuth
     {
         public PathString AuthorizationEndpoint { get; set; }
         public CarcarahAuthorizationProvider AuthorizationProvider { get; set; }
+
+        internal PathString EndSessionEndPoint => 
+            new PathString("/endsession");
+
+        internal PathString IdTokenEndPoint =>
+            new PathString("/token");
     }
 }

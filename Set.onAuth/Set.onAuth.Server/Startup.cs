@@ -24,19 +24,18 @@ namespace Set.onAuth.Server
 
     public class MyProvider : CarcarahAuthorizationProvider
     {
-        public override Task<bool> GrantResourceOwnerCredentials(string username, string password)
+        public override Task<bool> GrantResourceOwnerCredentials(CarcarahOnAuthContext context)
         {
-            Console.WriteLine("Validate Provider");
+            var isValid = context.UserName == "yan" && context.Password == "master";
 
-            var user = username;
-            var pass = password;
+            if (isValid)
+            {
+                var identity = new ClaimsIdentity();
+                identity.AddClaim(new Claim(ClaimTypes.Name, "yan"));
+                identity.AddClaim(new Claim(ClaimTypes.Sid, "010101"));
 
-            var isValid = user == "yan" && pass == "master";
-
-            var identity = new ClaimsIdentity();
-            identity.AddClaim(new Claim(ClaimTypes.Name, "yan"));
-
-            Validate(identity);
+                context.AddIdentityClaims(identity);
+            }
 
             return Task.FromResult<bool>(isValid);
         }

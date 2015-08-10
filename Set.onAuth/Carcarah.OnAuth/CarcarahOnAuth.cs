@@ -3,74 +3,65 @@ using System.Linq;
 using Microsoft.Owin;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Carcarah.OnAuth.Config;
 
 namespace Carcarah.OnAuth
 {
+    using OpenId.AuthenticationFlow;
     using OpenId.Request;
     using AppFunc = Func<IDictionary<string, object>, Task>;
 
     public class CarcarahOnAuth
     {
-        private AppFunc _next;
-        private IOwinContext _context;
-        private CarcarahOnAuthOptions _options;
-        private AuthenticationRequest _request;
+        private AppFunc next;
+        private IOwinContext context;
+        private CarcarahOnAuthOptions options;
 
         public CarcarahOnAuth(AppFunc next, CarcarahOnAuthOptions options)
         {
-            _next = next;
-            _options = options;
+            this.next = next;
+            this.options = options;
         }
 
         public async Task Invoke(IDictionary<string, object> environment)
         {
+            context = new OwinContext(environment);
+
             try
             {
-
-                InitializeOwinContext(environment);
-
-                if (IsAuthorizationEndPoint())
-                    await _next.Invoke(environment);
+                if (context.Request.Path == options.EndSessionEndPoint)
+                {
+                    context.DeleteToken();
+                    context.Unauthorized(options);
+                }
+                else if (context.Request.Path == options.AuthorizationEndpoint)
+                    await next.Invoke(environment);
                 else
-                    await AuthorizeRequest(environment);
+                    await Authorize(environment);
+
             }
             catch (AuthenticationRequestException ex)
             {
-                _context.BadRequest(ex.Message);
+                context.BadRequest(ex.Message);
             }
             catch
             {
-                _context.InternalServerError();
+                context.InternalServerError();
             }
         }
 
-        private void InitializeOwinContext(IDictionary<string, object> environment)
+        private async Task Authorize(IDictionary<string, object> environment)
         {
-            _context = new OwinContext(environment);
-            _options.AuthorizationProvider.Context = _context;
-            _request = new AuthenticationRequest(_context);
-        }
+            var request = new AuthenticationRequest(context);
+            var onAuthContext = new CarcarahOnAuthContext(options, request);
+            var flow = AuthenticationFlowFactory.New(onAuthContext);
 
-        private bool IsAuthorizationEndPoint()
-        {
-            return _context.Request.Path == _options.AuthorizationEndpoint;
-        }
-
-        private async Task AuthorizeRequest(IDictionary<string, object> environment)
-        {
-            var user = await _request.Body.FindUserName();
-            var pass = await _request.Body.FindPassword();
-
-            var IsAuthorized = await _options.AuthorizationProvider.ValidateClientAuthentication() ||
-                               await _options.AuthorizationProvider.GrantResourceOwnerCredentials(user, pass);
-
-            if (!IsAuthorized)
-                _context.Unauthorized(_options);
+            if (request.TokenRegistered())
+                return;
             else
-            {
-                _context.Authorized();
-                await _next.Invoke(environment);
-            }
+                await flow.AuthorizeEndUser();
+
+            await next.Invoke(environment);
         }
     }
 }
