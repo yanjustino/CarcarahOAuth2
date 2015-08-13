@@ -8,7 +8,7 @@ namespace Carcarah.OnAuth.OpenId.Request
 {
     public class RequestAssertationConcern
     {
-        public static void IsNotNull(string key, string message)
+        public static void IsNotNull(object key, string message)
         {
             if (key == null)
                 throw new AuthenticationRequestException("invalid_request", message);
@@ -20,5 +20,10 @@ namespace Carcarah.OnAuth.OpenId.Request
                 throw new AuthenticationRequestException("invalid_request", message);
         }
 
+        public static void IsTrue(bool value, string message)
+        {
+            if (value == false)
+                throw new AuthenticationRequestException("invalid_request", message);
+        }
     }
 }

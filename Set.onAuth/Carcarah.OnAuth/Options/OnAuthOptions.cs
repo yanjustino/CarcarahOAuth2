@@ -1,12 +1,15 @@
-﻿using Carcarah.OnAuth.Config;
+﻿using Carcarah.OnAuth.OpenId;
 using Microsoft.Owin;
+using System.Linq;
+using System.Collections.Generic;
 
-namespace Carcarah.OnAuth
+namespace Carcarah.OnAuth.Options
 {
-    public class CarcarahOnAuthOptions
+    public class OnAuthOptions
     {
         public PathString AuthorizationEndpoint { get; set; }
-        public CarcarahAuthorizationProvider AuthorizationProvider { get; set; }
+        public AuthorizationProvider AuthorizationProvider { get; set; }
+        public List<Client> Clients { get; set; }
 
         internal PathString EndSessionEndPoint => 
             new PathString("/endsession");

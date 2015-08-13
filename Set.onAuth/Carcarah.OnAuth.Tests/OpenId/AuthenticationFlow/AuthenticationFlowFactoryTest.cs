@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Carcarah.OnAuth.OpenId.AuthenticationFlow;
 using Carcarah.OnAuth.OpenId.Request;
 using Microsoft.Owin;
+using Carcarah.OnAuth.OpenId.AuthenticationFlow.Flows;
 
 namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
 {

@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Owin;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Carcarah.OnAuth.Config;
+using Carcarah.OnAuth.Options;
 
 namespace Carcarah.OnAuth
 {
@@ -15,9 +15,9 @@ namespace Carcarah.OnAuth
     {
         private AppFunc next;
         private IOwinContext context;
-        private CarcarahOnAuthOptions options;
+        private OnAuthOptions options;
 
-        public CarcarahOnAuth(AppFunc next, CarcarahOnAuthOptions options)
+        public CarcarahOnAuth(AppFunc next, OnAuthOptions options)
         {
             this.next = next;
             this.options = options;
@@ -29,16 +29,23 @@ namespace Carcarah.OnAuth
 
             try
             {
-                if (context.Request.Path == options.EndSessionEndPoint)
-                {
-                    context.DeleteToken();
-                    context.Unauthorized(options);
-                }
-                else if (context.Request.Path == options.AuthorizationEndpoint)
+                bool isEndSessionEndPoint =
+                    context.Request.Path.Equals(options.EndSessionEndPoint);
+
+                bool isAuthorizationEndpoint =
+                    context.Request.Path.Equals(options.AuthorizationEndpoint);
+
+                if (isEndSessionEndPoint)
+                    await Signout();
+                else if (isAuthorizationEndpoint)
                     await next.Invoke(environment);
                 else
-                    await Authorize(environment);
+                {
+                    var flow = AuthenticationFlowFactory.New(context, options);
 
+                    await flow.AuthorizeEndUser();
+                    await next.Invoke(environment);
+                }
             }
             catch (AuthenticationRequestException ex)
             {
@@ -50,18 +57,12 @@ namespace Carcarah.OnAuth
             }
         }
 
-        private async Task Authorize(IDictionary<string, object> environment)
+        private async Task Signout()
         {
-            var request = new AuthenticationRequest(context);
-            var onAuthContext = new CarcarahOnAuthContext(options, request);
-            var flow = AuthenticationFlowFactory.New(onAuthContext);
+            context.DeleteToken();
+            context.Unauthorized(options);
 
-            if (request.TokenRegistered())
-                return;
-            else
-                await flow.AuthorizeEndUser();
-
-            await next.Invoke(environment);
+            await Task.FromResult<int>(1);
         }
     }
 }

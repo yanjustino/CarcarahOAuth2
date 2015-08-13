@@ -1,4 +1,4 @@
-﻿using Carcarah.OnAuth.Config;
+﻿using Carcarah.OnAuth.Options;
 using Carcarah.OnAuth.OpenId.AuthenticationFlow;
 using Microsoft.Owin;
 using System;
@@ -39,6 +39,6 @@ namespace Carcarah.OnAuth.OpenId.Request
         }
 
         public bool TokenRegistered() =>
-            Cookies.Any(x => x.Key == CarcarahCookieHandler.TOKEN_KEY);
+            Cookies.Any(x => x.Key == CookieHandler.TOKEN_KEY_PREFIX);
     }
 }

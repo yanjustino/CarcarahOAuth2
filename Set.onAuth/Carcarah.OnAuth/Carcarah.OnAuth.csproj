@@ -54,24 +54,25 @@
   <ItemGroup>
     <Compile Include="CarcarahOnAuthContext.cs" />
     <Compile Include="CarcarahOnAuthResponse.cs" />
-    <Compile Include="Config\AppBuilderExtensions.cs" />
+    <Compile Include="Options\AppBuilderExtensions.cs" />
     <Compile Include="OpenId\AuthenticationFlow\AuthenticationFlowBase.cs" />
     <Compile Include="OpenId\AuthenticationFlow\AuthenticationFlowFactory.cs" />
-    <Compile Include="OpenId\AuthenticationFlow\AuthorizationCodeFlow.cs" />
-    <Compile Include="OpenId\AuthenticationFlow\HybridFlow.cs" />
-    <Compile Include="OpenId\AuthenticationFlow\ImplicitFlow.cs" />
+    <Compile Include="OpenId\AuthenticationFlow\Flows\AuthorizationCodeFlow.cs" />
+    <Compile Include="OpenId\AuthenticationFlow\Flows\HybridFlow.cs" />
+    <Compile Include="OpenId\AuthenticationFlow\Flows\ImplicitFlow.cs" />
+    <Compile Include="OpenId\Client.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequestAssertationConcern.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequestBody.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequestException.cs" />
-    <Compile Include="Config\CarcarahCookieHandler.cs" />
+    <Compile Include="Options\CookieHandler.cs" />
     <Compile Include="CarcarahOnAuth.cs" />
-    <Compile Include="CarcarahOnAuthOptions.cs" />
-    <Compile Include="Config\CarcarahAuthorizationProvider.cs" />
+    <Compile Include="Options\OnAuthOptions.cs" />
+    <Compile Include="Options\AuthorizationProvider.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequest.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequestQuery.cs" />
     <Compile Include="OpenId\AuthenticationFlow\IAuthenticationFlow.cs" />
     <Compile Include="OpenId\Response\AuthenticationResponse.cs" />
-    <Compile Include="OpenId\Token\JsonWebTokenHandler.cs" />
+    <Compile Include="OpenId\Token\TokenHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Carcarah.OnAuth.Config;
+using Carcarah.OnAuth.Options;
 
 namespace Carcarah.OnAuth.OpenId.AuthenticationFlow
 {
-    /// <summary>
-    /// Description (pt-br):
-    ///     Classe base para operações genéricas de um 
-    ///     fluxo de autenticação específico
-    /// </summary>
     public abstract class AuthenticationFlowBase
     {
         public CarcarahOnAuthContext Context { get; }
@@ -19,9 +14,7 @@ namespace Carcarah.OnAuth.OpenId.AuthenticationFlow
         
         public async Task AuthorizeEndUser()
         {
-            var grantOwnerCredentials = GrantResourceOwnerCredentials();
-
-            var IsAuthorized = await grantOwnerCredentials;
+            var IsAuthorized = await this.Context.GrantResourceOwnerCredentials();
 
             if (!IsAuthorized)
                 this.Context.Request.Context.Unauthorized(this.Context.Options);
@@ -34,10 +27,5 @@ namespace Carcarah.OnAuth.OpenId.AuthenticationFlow
         }
 
         protected abstract string SuccessfulAuthenticationResponse();
-
-        private Task<bool> GrantResourceOwnerCredentials()
-        {
-            return this.Context.Options.AuthorizationProvider.GrantResourceOwnerCredentials(this.Context);
-        }
     }
 }

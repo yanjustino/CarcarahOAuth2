@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Carcarah.OnAuth.OpenId.Request;
 
-namespace Carcarah.OnAuth.OpenId.AuthenticationFlow
+namespace Carcarah.OnAuth.OpenId.AuthenticationFlow.Flows
 {
     public class ImplicitFlow : AuthenticationFlowBase, IAuthenticationFlow
     {

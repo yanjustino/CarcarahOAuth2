@@ -8,9 +8,9 @@ using System.Security.Claims;
 using System.IO;
 using Carcarah.OnAuth.OpenId.Request;
 
-namespace Carcarah.OnAuth.Config
+namespace Carcarah.OnAuth.Options
 {
-    public abstract class CarcarahAuthorizationProvider
+    public abstract class AuthorizationProvider
     {
         public abstract Task<bool> GrantResourceOwnerCredentials(CarcarahOnAuthContext context);
 

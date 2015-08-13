@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Carcarah.OnAuth.Options;
 
 namespace Carcarah.OnAuth
 {
@@ -22,21 +23,17 @@ namespace Carcarah.OnAuth
             context.Response.Redirect(redirectUri);
         }
 
-        static internal void Unauthorized(this IOwinContext context, CarcarahOnAuthOptions options)
+        static internal void Unauthorized(this IOwinContext context, OnAuthOptions options)
         {
-            context.Response.Redirect($"{options.AuthorizationEndpoint.Value}{context.Request.QueryString}");
-        }
-
-        static internal void Deny(this IOwinContext context)
-        {
+            context.DeleteToken();
             context.Response.StatusCode = 401;
-            context.Response.ReasonPhrase = "invalid_grant";
+            context.Response.Redirect($"{options.AuthorizationEndpoint.Value}{context.Request.QueryString}");
         }
 
         static internal void BadRequest(this IOwinContext context, string message)
         {
-            context.Response.StatusCode = 302;
-            context.Response.ReasonPhrase = message;
+            context.Response.StatusCode = 400;
+            context.Response.ReasonPhrase = $"{message}";
         }
 
         static internal void InternalServerError(this IOwinContext context)
