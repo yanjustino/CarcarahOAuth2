@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Carcarah.OnAuth.OpenId.Request;
-using System.Threading.Tasks;
 using Microsoft.Owin;
-using Carcarah.OnAuth.Config;
-using Carcarah.OnAuth.OpenId.AuthenticationFlow;
-using System.IO;
 
 namespace Carcarah.OnAuth.Tests
 {

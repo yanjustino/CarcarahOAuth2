@@ -12,15 +12,12 @@ namespace Carcarah.OnAuth.OpenId.Request
     {
         private IOwinContext context;
 
-        public string UserName => FindUserName()?.Result;
-        public string Password => FindPassword()?.Result;
-
         public AuthenticationRequestBody(IOwinContext context)
         {
             this.context = context;
         }
 
-        private async Task<string> FindUserName()
+        public async Task<string> FindUserName()
         {
             if (context.Request.Body == null)
                 return null;
@@ -29,7 +26,7 @@ namespace Carcarah.OnAuth.OpenId.Request
             return form["username"];
         }
 
-        private async Task<string> FindPassword()
+        public async Task<string> FindPassword()
         {
             if (context.Request.Body == null)
                 return null;

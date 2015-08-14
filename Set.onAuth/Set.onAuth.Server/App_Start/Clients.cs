@@ -8,7 +8,7 @@ namespace Set.onAuth.Server.App_Start
 {
     public class Clients
     {
-        public static List<Client> Build()
+        public static List<Client> Get()
         {
             return new List<Client>
             {

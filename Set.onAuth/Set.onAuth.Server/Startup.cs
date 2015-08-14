@@ -17,18 +17,19 @@ namespace Set.onAuth.Server
         {
             app.UseCarcarahMiddleware(new OnAuthOptions
             {
-                AuthorizationEndpoint = new PathString("/onauth/authorize"),
+                AuthorizationUri = new PathString("/onauth/authorize"),
                 AuthorizationProvider = new MyProvider(),
-                Clients = Clients.Build()
+                Clients = Clients.Get(),
+                Users = Users.Get()
             });
         }
     }
 
     public class MyProvider : AuthorizationProvider
     {
-        public override Task<bool> GrantResourceOwnerCredentials(CarcarahOnAuthContext context)
+        public override async Task<bool> GrantResourceOwnerCredentials(CarcarahOnAuthContext context)
         {
-            var isValid = context.UserName == "yan" && context.Password == "master";
+            var isValid = await context.UserName() == "yan" && await context.Password() == "master";
 
             if (isValid)
             {
@@ -39,7 +40,7 @@ namespace Set.onAuth.Server
                 context.AddIdentityClaims(identity);
             }
 
-            return Task.FromResult<bool>(isValid);
+            return await Task.FromResult<bool>(isValid);
         }
     }
 }

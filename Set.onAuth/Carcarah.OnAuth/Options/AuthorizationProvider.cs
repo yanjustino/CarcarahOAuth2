@@ -13,10 +13,5 @@ namespace Carcarah.OnAuth.Options
     public abstract class AuthorizationProvider
     {
         public abstract Task<bool> GrantResourceOwnerCredentials(CarcarahOnAuthContext context);
-
-        internal virtual bool HasValidateCookieAuthentication(CarcarahOnAuthContext context)
-        {
-            return context.Request.TokenRegistered();
-        }
     }
 }

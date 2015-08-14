@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="CarcarahOnAuthContext.cs" />
     <Compile Include="CarcarahOnAuthResponse.cs" />
+    <Compile Include="OpenId\User.cs" />
     <Compile Include="Options\AppBuilderExtensions.cs" />
     <Compile Include="OpenId\AuthenticationFlow\AuthenticationFlowBase.cs" />
     <Compile Include="OpenId\AuthenticationFlow\AuthenticationFlowFactory.cs" />
@@ -64,7 +65,7 @@
     <Compile Include="OpenId\Request\AuthenticationRequestAssertationConcern.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequestBody.cs" />
     <Compile Include="OpenId\Request\AuthenticationRequestException.cs" />
-    <Compile Include="Options\CookieHandler.cs" />
+    <Compile Include="Repositories\CookieRepository.cs" />
     <Compile Include="CarcarahOnAuth.cs" />
     <Compile Include="Options\OnAuthOptions.cs" />
     <Compile Include="Options\AuthorizationProvider.cs" />
@@ -78,7 +79,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

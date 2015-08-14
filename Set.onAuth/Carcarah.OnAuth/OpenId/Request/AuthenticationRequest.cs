@@ -33,12 +33,8 @@ namespace Carcarah.OnAuth.OpenId.Request
             RequestAssertationConcern.IsNotNull(Query.response_type, "response_type is required");
             RequestAssertationConcern.IsNotNull(Query.client_id, "client_id is required");
             RequestAssertationConcern.IsNotNull(Query.redirect_uri, "redirect_uri is required");
-            RequestAssertationConcern.IsNotNull(Query.state, "state is required");
 
             RequestAssertationConcern.Contains(Query.scope, "openid", "'openid' value no present");
         }
-
-        public bool TokenRegistered() =>
-            Cookies.Any(x => x.Key == CookieHandler.TOKEN_KEY_PREFIX);
     }
 }

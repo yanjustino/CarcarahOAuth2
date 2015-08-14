@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Carcarah.OnAuth.Options;
+using Carcarah.OnAuth.Repositories;
 
 namespace Carcarah.OnAuth
 {
@@ -23,23 +24,41 @@ namespace Carcarah.OnAuth
             context.Response.Redirect(redirectUri);
         }
 
-        static internal void Unauthorized(this IOwinContext context, OnAuthOptions options)
+        static internal void Unauthorized(this IOwinContext context, string redirect_url)
         {
             context.DeleteToken();
             context.Response.StatusCode = 401;
-            context.Response.Redirect($"{options.AuthorizationEndpoint.Value}{context.Request.QueryString}");
+            context.Response.Redirect(redirect_url);
         }
 
-        static internal void BadRequest(this IOwinContext context, string message)
+        static internal void Unauthorized(this IOwinContext context, OnAuthOptions options)
         {
-            context.Response.StatusCode = 400;
-            context.Response.ReasonPhrase = $"{message}";
+            var redirect_url =
+                $"{options.AuthorizationUri.Value}{context.Request.QueryString}";
+
+            context.DeleteToken();
+            context.Response.StatusCode = 401;
+            context.Response.Redirect(redirect_url);
+        }
+
+        static internal void AuthenticationErrorResponse(this IOwinContext context, string error)
+        {
+            context.Response.StatusCode = 302;
+            context.Response.ReasonPhrase = $"invalid_request {error}";
         }
 
         static internal void InternalServerError(this IOwinContext context)
         {
             context.Response.StatusCode = 501;
             context.Response.ReasonPhrase = "Internal Server Error";
+        }
+
+        static internal Task Singout(this IOwinContext context, OnAuthOptions options)
+        {
+            context.DeleteToken();
+            Unauthorized(context, options);
+
+            return Task.FromResult<int>(0);
         }
     }
 }

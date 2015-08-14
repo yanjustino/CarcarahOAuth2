@@ -25,7 +25,7 @@ namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
             context.Request.QueryString = new QueryString(query);
 
             var request = new AuthenticationRequest(context);
-            var flow = AuthenticationFlowFactory.New(new CarcarahOnAuthContext(null, request));
+            var flow = AuthenticationFlowFactory.New(context, null);
 
             Assert.IsInstanceOfType(flow, typeof(AuthorizationCodeFlow));
         }
@@ -42,7 +42,7 @@ namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
 
             context.Request.QueryString = new QueryString(query);
             var request = new AuthenticationRequest(context);
-            var flow = AuthenticationFlowFactory.New(new CarcarahOnAuthContext(null, request));
+            var flow = AuthenticationFlowFactory.New(context, null);
 
             Assert.IsInstanceOfType(flow, typeof(ImplicitFlow));
         }
@@ -59,7 +59,7 @@ namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
 
             context.Request.QueryString = new QueryString(query);
             var request = new AuthenticationRequest(context);
-            var flow = AuthenticationFlowFactory.New(new CarcarahOnAuthContext(null, request));
+            var flow = AuthenticationFlowFactory.New(context, null);
 
             Assert.IsInstanceOfType(flow, typeof(ImplicitFlow));
         }
@@ -76,7 +76,7 @@ namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
 
             context.Request.QueryString = new QueryString(query);
             var request = new AuthenticationRequest(context);
-            var flow = AuthenticationFlowFactory.New(new CarcarahOnAuthContext(null, request));
+            var flow = AuthenticationFlowFactory.New(context, null);
 
             Assert.IsInstanceOfType(flow, typeof(HybridFlow));
         }
@@ -93,7 +93,7 @@ namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
 
             context.Request.QueryString = new QueryString(query);
             var request = new AuthenticationRequest(context);
-            var flow = AuthenticationFlowFactory.New(new CarcarahOnAuthContext(null, request));
+            var flow = AuthenticationFlowFactory.New(context, null);
 
             Assert.IsInstanceOfType(flow, typeof(HybridFlow));
         }
@@ -110,7 +110,7 @@ namespace Carcarah.OnAuth.Tests.OpenId.AuthenticationFlow
 
             context.Request.QueryString = new QueryString(query);
             var request = new AuthenticationRequest(context);
-            var flow = AuthenticationFlowFactory.New(new CarcarahOnAuthContext(null, request));
+            var flow = AuthenticationFlowFactory.New(context, null);
 
             Assert.IsInstanceOfType(flow, typeof(HybridFlow));
         }

@@ -4,6 +4,7 @@ using Microsoft.Owin;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Carcarah.OnAuth.Options;
+using Carcarah.OnAuth.Repositories;
 
 namespace Carcarah.OnAuth
 {
@@ -29,27 +30,24 @@ namespace Carcarah.OnAuth
 
             try
             {
-                bool isEndSessionEndPoint =
-                    context.Request.Path.Equals(options.EndSessionEndPoint);
-
-                bool isAuthorizationEndpoint =
-                    context.Request.Path.Equals(options.AuthorizationEndpoint);
-
-                if (isEndSessionEndPoint)
-                    await Signout();
-                else if (isAuthorizationEndpoint)
+                if (IsLogoutRequest())
+                {
+                    await context.Singout(options);
+                }
+                else if (IsLoginRequest())
+                {
                     await next.Invoke(environment);
+                }
                 else
                 {
-                    var flow = AuthenticationFlowFactory.New(context, options);
-
-                    await flow.AuthorizeEndUser();
-                    await next.Invoke(environment);
+                    await AuthenticationFlowFactory
+                        .New(context, options)
+                        .AuthorizeEndUser();
                 }
             }
             catch (AuthenticationRequestException ex)
             {
-                context.BadRequest(ex.Message);
+                context.AuthenticationErrorResponse(ex.Description);
             }
             catch
             {
@@ -57,12 +55,15 @@ namespace Carcarah.OnAuth
             }
         }
 
-        private async Task Signout()
+        private bool IsLoginRequest()
         {
-            context.DeleteToken();
-            context.Unauthorized(options);
+            return context.Request.Path.Equals(options.AuthorizationUri) ||
+                context.Request.Path.Equals(options.AuthorizationEndpoint);
+        }
 
-            await Task.FromResult<int>(1);
+        private bool IsLogoutRequest()
+        {
+            return context.Request.Path.Equals(options.EndSessionEndPoint);
         }
     }
 }

@@ -1,28 +1,34 @@
 ﻿using System.Threading.Tasks;
 using Carcarah.OnAuth.Options;
+using Carcarah.OnAuth.Repositories;
+using Microsoft.Owin;
 
 namespace Carcarah.OnAuth.OpenId.AuthenticationFlow
 {
     public abstract class AuthenticationFlowBase
     {
-        public CarcarahOnAuthContext Context { get; }
+        protected CarcarahOnAuthContext Context { get; }
+        protected IOwinContext OwinContext { get; }
 
         public AuthenticationFlowBase(CarcarahOnAuthContext context)
         {
-            this.Context = context;
+            Context = context;
+            OwinContext = context.Request.Context;
         }
-        
+
         public async Task AuthorizeEndUser()
         {
-            var IsAuthorized = await this.Context.GrantResourceOwnerCredentials();
+            var IsAuthorized = await Context.FindUserInMemory() || 
+                               await Context.GrantResourceOwnerCredentials();
 
             if (!IsAuthorized)
-                this.Context.Request.Context.Unauthorized(this.Context.Options);
+                OwinContext.Unauthorized(Context.Options);
             else
             {
                 var response = SuccessfulAuthenticationResponse();
-                var redirect_uri = this.Context.Request.Query.redirect_uri;
-                this.Context.Request.Context.Authorized($"{redirect_uri}?{response}");
+                var redirect_uri = $"{Context.Request.Query.redirect_uri}?{response}";
+
+                OwinContext.Authorized(redirect_uri);
             }
         }
 
