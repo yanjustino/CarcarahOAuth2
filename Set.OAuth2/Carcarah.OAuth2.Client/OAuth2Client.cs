@@ -1,11 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Carcarah.OAuth2.Client
@@ -27,8 +23,10 @@ namespace Carcarah.OAuth2.Client
 
         private async Task<SuccessfulAuthenticationResponse> GetAuthorizationCode(AuthorizationGrantRequest request)
         {
-            var client = new HttpClient();
-            var url = $"{request.Uri}?scope=openid&response_type=code&client_id={request.ClientId}&prompt=none&redirect_uri={request.RedirectUri}";
+            var url = $"{request.Uri}?scope=openid&" +
+                      $"response_type=code&" +
+                      $"client_id={request.ClientId}&" +
+                      $"prompt=none&redirect_uri={request.RedirectUri}";
 
             var data = new FormUrlEncodedContent(new[]
             {
@@ -36,6 +34,7 @@ namespace Carcarah.OAuth2.Client
                 new KeyValuePair<string, string>("password", request.Password),
             });
 
+            var client = new HttpClient();
             var response = await client.PostAsync(url, data);
             var content = await response.Content.ReadAsStringAsync();
 
@@ -49,9 +48,9 @@ namespace Carcarah.OAuth2.Client
             }
             else
             {
-                 return JsonConvert
-                    .DeserializeObject<SuccessfulAuthenticationResponse>
-                    (content);
+                return JsonConvert
+                   .DeserializeObject<SuccessfulAuthenticationResponse>
+                   (content);
             }
         }
 
@@ -59,7 +58,6 @@ namespace Carcarah.OAuth2.Client
         {
             var client = new HttpClient();
             var url = $"{request.Uri}token";
-
 
             var data = new FormUrlEncodedContent(new[]
             {

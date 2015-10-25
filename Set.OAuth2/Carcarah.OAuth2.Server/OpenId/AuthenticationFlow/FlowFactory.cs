@@ -8,12 +8,13 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
 {
     public class FlowFactory
     {
-        public static Flow Get(
-            IOwinContext owinContext, 
-            OAuthOptions options, 
+        public static Flow Get
+        (
+            IOwinContext owinContext,
+            OAuthOptions options,
             AuthorizationCodeStorage authCodeStorage,
             RefreshTokenStorage refreshTokenStorage
-            )
+        )
         {
             var request = new AuthenticationRequest(owinContext);
             var context = new OAuthContext(options, request, owinContext);
@@ -30,12 +31,13 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
             }
         }
 
-        public static TokenEndPoint GetTokenEndProint(
-            IOwinContext owinContext, 
-            OAuthOptions options, 
+        public static TokenEndPoint GetTokenEndProint
+        (
+            IOwinContext owinContext,
+            OAuthOptions options,
             AuthorizationCodeStorage storage,
             RefreshTokenStorage refreshTokenStorage
-            )
+        )
         {
             var request = new TokenRequest(owinContext);
             var context = new OAuthContext(options, request, owinContext);

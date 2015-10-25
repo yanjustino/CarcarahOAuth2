@@ -16,8 +16,6 @@ namespace Carcarah.OAuth2.Server.OpenId.Request
             }
         }
 
-
-
         public RequestBase(IOwinContext context)
         {
             Context = context;

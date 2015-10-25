@@ -4,8 +4,6 @@ using Carcarah.OAuth2.Server.OpenId.Request;
 using Carcarah.OAuth2.Server.OpenId.Response;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
@@ -52,9 +50,9 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
 
             var payload = new Dictionary<string, object>
             {
-                ["iss"] = "https://onauth.set.rn.gov.br",
+                ["iss"] = _context.OwinConext.Request.PathBase.Value,
                 ["sub"] = authCode.SubjectId,
-                ["aud"] = "https://onauth.set.rn.gov.br/token",
+                ["aud"] = _context.OwinConext.Request.PathBase.Value + RequestRoutes.TokenEndPoint.Value,
                 ["jti"] = jti,
                 ["exp"] = exp,
                 ["iat"] = DateTimeOffsetHelper.NewExpirationDate(0),

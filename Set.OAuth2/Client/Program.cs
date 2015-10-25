@@ -26,8 +26,8 @@ namespace Client
                     (
                         new AuthorizationGrantRequest
                         {
-                            Uri = "http://onauth2.azurewebsites.net/",
-                            //Uri = "http://localhost:53586/",
+                            //Uri = "http://onauth2.azurewebsites.net/",
+                            Uri = "http://localhost:53586/",
                             ClientId = "635678CD-FB15-4645-A044-6FEB69E70DC8",
                             RedirectUri = "http://localhost/client",
                             Username = "yan",

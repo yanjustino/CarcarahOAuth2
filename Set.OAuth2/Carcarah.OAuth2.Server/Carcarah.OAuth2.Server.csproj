@@ -86,7 +86,6 @@
     <Compile Include="OpenId\Request\RequestRoutes.cs" />
     <Compile Include="OpenId\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\CookiesHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
