@@ -35,6 +35,7 @@ namespace Set.onAuth.Server
             {
                 var identity = new ClaimsIdentity();
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.Username));
+                identity.AddClaim(new Claim(ClaimTypes.Hash, ""));
 
                 context.SignIn(identity);
             }

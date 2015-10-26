@@ -3,40 +3,57 @@ using System.Threading.Tasks;
 
 namespace Carcarah.OAuth2.Server.OpenId.Request
 {
-    public class AuthenticationRequest: RequestBase
+    public class AuthenticationRequest : RequestBase
     {
-        public string scope  => this["scope"];
-        public string response_type => this["response_type"];
-        public string client_id => this["client_id"];
-        public string redirect_uri => this["redirect_uri"];
-        public string state => this["state"];
-        public string response_mode => this["response_mode"];
-        public string nonce => this["nonce"];
-        public string display => this["display"];
-        public string prompt => this["prompt"];
-        public string max_age => this["max_age"];
-        public string ui_locales => this["ui_locales"];
-        public string id_token_hint => this["id_token_hint"];
-        public string login_hint => this["login_hint"];
-        public string acr_values => this["acr_values"];
+        public string scope { get; private set; }
+        public string response_type { get; private set; }
+        public string client_id { get; private set; }
+        public string client_secret { get; private set; }
+        public string redirect_uri { get; private set; }
+        public string state { get; private set; }
+        public string response_mode { get; private set; }
+        public string nonce { get; private set; }
+        public string display { get; private set; }
+        public string prompt { get; private set; }
+        public string max_age { get; private set; }
+        public string ui_locales { get; private set; }
+        public string id_token_hint { get; private set; }
+        public string login_hint { get; private set; }
+        public string acr_values { get; private set; }
 
-        public async Task<string> username() => 
+        public async Task<string> username() =>
             await FindInForm("username");
+
         public async Task<string> password() =>
             await FindInForm("password");
 
-        public AuthenticationRequest(IOwinContext context):base(context)
+        public AuthenticationRequest(IOwinContext context) : base(context)
         {
+        }
+
+        public async Task LoadAsync()
+        {
+            scope = await Find("scope");
+            response_type = await Find("response_type");
+            client_id = await Find("client_id");
+            client_secret = await Find("client_secret");
+            redirect_uri = await Find("redirect_uri");
+            state = await Find("state");
+            response_mode = await Find("response_mode");
+            nonce = await Find("nonce");
+            display = await Find("display");
+            prompt = await Find("prompt");
+            max_age = await Find("max_age");
+            ui_locales = await Find("ui_locales");
+            id_token_hint = await Find("id_token_hint");
+            login_hint = await Find("login_hint");
+            acr_values = await Find("acr_values");
+
             ValidateAuthenticationRequest();
         }
 
         public void ValidateAuthenticationRequest()
         {
-            if (!Context.Request.QueryString.HasValue)
-                throw new AuthenticationRequestException(
-                    "invalid_request_uri",
-                    "request uri is required");
-
             AuthenticationRequestAssertationConcern.IsNotNull(scope, "invalid_request_uri", "scope is required");
             AuthenticationRequestAssertationConcern.IsNotNull(prompt, "interaction_required", "prompt is required");
             AuthenticationRequestAssertationConcern.IsNotNull(response_type, "invalid_request_uri", "response_type is required");
@@ -45,7 +62,5 @@ namespace Carcarah.OAuth2.Server.OpenId.Request
 
             AuthenticationRequestAssertationConcern.Contains(scope, "openid", "invalid_request_uri", "'openid' value no present");
         }
-
-
     }
 }

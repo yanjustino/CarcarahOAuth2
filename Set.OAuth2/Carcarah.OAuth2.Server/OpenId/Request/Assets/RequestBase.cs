@@ -8,12 +8,13 @@ namespace Carcarah.OAuth2.Server.OpenId.Request
         public RequestMethod Method { get; }
         protected IOwinContext Context { get; }
 
-        protected string this[string param]
+        protected async Task<string> Find(string param)
         {
-            get
-            {
-                return Context.Request.Query[param];
-            }
+            var result = Context.Request.Query[param] != null ?
+                         Context.Request.Query[param] :
+                         await FindInForm(param);
+
+            return result;
         }
 
         public RequestBase(IOwinContext context)

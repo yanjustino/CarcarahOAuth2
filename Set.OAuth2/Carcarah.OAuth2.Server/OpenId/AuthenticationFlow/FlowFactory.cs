@@ -8,7 +8,7 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
 {
     public class FlowFactory
     {
-        public static Flow Get
+        public static async Task<Flow> Get
         (
             IOwinContext owinContext,
             OAuthOptions options,
@@ -17,11 +17,13 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
         )
         {
             var request = new AuthenticationRequest(owinContext);
+            await request.LoadAsync();
+
             var context = new OAuthContext(options, request, owinContext);
 
             switch (context.AuthenticationRequest.response_type?.Trim())
             {
-                case "code": return new AuthorizationCodeFlow(context, authCodeStorage, refreshTokenStorage);
+                case "code": return new AuthorizationCodeFlow(context, authCodeStorage);
                 case "id_token": return new ImplicitFlow(context);
                 case "id_token token": return new ImplicitFlow(context);
                 case "code id_token": return new HybridFlow(context);
@@ -31,7 +33,7 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
             }
         }
 
-        public static TokenEndPoint GetTokenEndProint
+        public static async Task<TokenEndPoint> GetTokenEndProint
         (
             IOwinContext owinContext,
             OAuthOptions options,
@@ -40,6 +42,8 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
         )
         {
             var request = new TokenRequest(owinContext);
+            await request.LoadAsync();
+
             var context = new OAuthContext(options, request, owinContext);
 
             return new TokenEndPoint(context, storage, refreshTokenStorage);

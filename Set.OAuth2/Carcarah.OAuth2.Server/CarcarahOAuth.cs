@@ -47,7 +47,7 @@ namespace Carcarah.OAuth2.Server
                 }
                 else if (context.IsTokenRequest())
                 {
-                    var tokenEndPoint = FlowFactory.GetTokenEndProint
+                    var flow = await FlowFactory.GetTokenEndProint
                         (
                             context,
                             options,
@@ -55,11 +55,17 @@ namespace Carcarah.OAuth2.Server
                             RefreshTokenStorage
                         );
 
-                    await tokenEndPoint.TokenRequest();
+                    await flow.TokenRequest();
                 }
                 else
                 {
-                    var flow = FlowFactory.Get(context, options, AuthCodeStorage, RefreshTokenStorage);
+                    var flow = await FlowFactory.Get
+                        (
+                            context, 
+                            options, 
+                            AuthCodeStorage, 
+                            RefreshTokenStorage
+                        );
 
                     await flow.AuthenticatesEndUser();
                 }

@@ -41,6 +41,16 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
             }
         }
 
+        public async Task ValidateToken()
+        {
+            //TODO
+        }
+
+        public async Task RefreshToken()
+        {
+            //TODO
+        }
+
         private async Task<SuccessfulTokenResponse> CreateTokenIdResponse(AuthorizationCode authCode)
         {
             var tokenLifeTime = authCode.Client.IdentityTokenLifetime;
@@ -98,6 +108,5 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
 
             return code;
         }
-
     }
 }

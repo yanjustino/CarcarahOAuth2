@@ -20,7 +20,7 @@ namespace Client
         {
             try
             {
-                OAuth2Client client = new OAuth2Client("b00d1174dbc47e846795dbefcf99d825945499fe52a9eabded8781232300d69b");
+                var client = new OAuth2Client();
 
                 var result = await client.AuthorizationGrantAsync
                     (
@@ -29,6 +29,7 @@ namespace Client
                             //Uri = "http://onauth2.azurewebsites.net/",
                             Uri = "http://localhost:53586/",
                             ClientId = "635678CD-FB15-4645-A044-6FEB69E70DC8",
+                            ClientSecret = "b00d1174dbc47e846795dbefcf99d825945499fe52a9eabded8781232300d69b",
                             RedirectUri = "http://localhost/client",
                             Username = "yan",
                             Password = "master1"

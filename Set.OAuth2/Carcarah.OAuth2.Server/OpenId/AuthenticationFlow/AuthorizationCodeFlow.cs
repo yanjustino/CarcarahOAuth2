@@ -11,14 +11,11 @@ namespace Carcarah.OAuth2.Server.OpenId.AuthenticationFlow
     public class AuthorizationCodeFlow : Flow
     {
         private AuthorizationCodeStorage _authorizationCodestorage;
-        private RefreshTokenStorage _refreshTokenStorage;
 
         public AuthorizationCodeFlow(OAuthContext context, 
-            AuthorizationCodeStorage authCodeStorage, 
-            RefreshTokenStorage refreshTokenStorage) : base(context)
+            AuthorizationCodeStorage authCodeStorage) : base(context)
         {
             _authorizationCodestorage = authCodeStorage;
-            _refreshTokenStorage = refreshTokenStorage;
         }
 
         public override async Task AuthenticatesEndUser()

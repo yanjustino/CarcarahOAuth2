@@ -10,21 +10,20 @@ namespace Carcarah.OAuth2.Server.OpenId.Request
 {
     public class TokenRequest : RequestBase
     {
-        public Task<string> redirect_uri() => 
-            Task.FromResult(FindInForm("redirect_uri").Result);
+        public string redirect_uri { get; private set; } 
+        public string grant_type { get; private set; }
+        public string code { get; private set; }
 
-        public Task<string> grant_type() => 
-            Task.FromResult(FindInForm("grant_type").Result);
-
-        public Task<string> code() => 
-            Task.FromResult(FindInForm("code").Result);
-
-        public async Task<string> username() =>
-            await FindInForm("username");
-
-        public async Task<string> password() =>
-            await FindInForm("password");
+        public async Task<string> username() => await FindInForm("username");
+        public async Task<string> password() => await FindInForm("password");
 
         public TokenRequest(IOwinContext context) : base(context) { }
+
+        public async Task LoadAsync()
+        {
+            redirect_uri = await Find("redirect_uri");
+            grant_type = await Find("grant_type");
+            code = await Find("code");
+        }
     }
 }

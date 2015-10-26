@@ -8,13 +8,6 @@ namespace Carcarah.OAuth2.Client
 {
     public class OAuth2Client
     {
-        public string SecretKey { get; private set; }
-
-        public OAuth2Client(string secretKey)
-        {
-            SecretKey = secretKey;
-        }
-
         public async Task<SuccessfulTokenResponse> AuthorizationGrantAsync(AuthorizationGrantRequest request)
         {
             var authCode = await GetAuthorizationCode(request);
@@ -23,13 +16,16 @@ namespace Carcarah.OAuth2.Client
 
         private async Task<SuccessfulAuthenticationResponse> GetAuthorizationCode(AuthorizationGrantRequest request)
         {
-            var url = $"{request.Uri}?scope=openid&" +
-                      $"response_type=code&" +
-                      $"client_id={request.ClientId}&" +
-                      $"prompt=none&redirect_uri={request.RedirectUri}";
+            var url = request.Uri;
 
             var data = new FormUrlEncodedContent(new[]
             {
+                new KeyValuePair<string, string>("scope", "openid"),
+                new KeyValuePair<string, string>("response_type", "code"),
+                new KeyValuePair<string, string>("client_id", request.ClientId),
+                new KeyValuePair<string, string>("client_secret", request.ClientSecret),
+                new KeyValuePair<string, string>("prompt", "none"),
+                new KeyValuePair<string, string>("redirect_uri", request.RedirectUri),
                 new KeyValuePair<string, string>("username", request.Username),
                 new KeyValuePair<string, string>("password", request.Password),
             });
